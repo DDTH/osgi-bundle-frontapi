@@ -13,7 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.java>1.7</version.java>
+		<version.java>1.6</version.java>
 		<version.felix>4.2.1</version.felix>
 		<version.osgi>4.3.0</version.osgi>
 	</properties>

@@ -21,7 +21,7 @@ import com.github.ddth.frontapi.osgi.AbstractActivator;
 
 public class Activator extends AbstractActivator {
 
-    public final static String MODULE = "frontapi";
+    public final static String MODULE_NAME = "frontapi";
 
     public final static String CONFIG_FILE = "/com/github/ddth/frontapi/frontapi.properties";
     public final static String PROP_REST_MAPPING = "frontapi.rest.mapping";
@@ -49,7 +49,7 @@ public class Activator extends AbstractActivator {
         apiRegistry = new ApiRegistry();
         apiRegistry.init();
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put("Module", MODULE);
+        props.put("Module", MODULE_NAME);
         registerService(IApiRegistry.class, apiRegistry, props);
     }
 

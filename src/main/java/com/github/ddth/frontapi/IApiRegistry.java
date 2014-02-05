@@ -13,7 +13,7 @@ public interface IApiRegistry {
     /**
      * Calls an API.
      * 
-     * @param module
+     * @param moduleName
      *            name of the module that provides API
      * @param apiName
      *            name of the API
@@ -23,21 +23,21 @@ public interface IApiRegistry {
      *            API's input parameters
      * @return
      */
-    public ApiResult callApi(String module, String apiName, String authKey, Object params);
+    public ApiResult callApi(String moduleName, String apiName, String authKey, Object params);
 
     /**
      * Bundle calls this method to register its APIs
      * 
-     * @param module
+     * @param moduleName
      * @param apiName
      * @param api
      */
-    public void register(String module, String apiName, IApi api);
+    public void register(String moduleName, String apiName, IApi api);
 
     /**
      * Bundle calls this method to unregister all its APIs.
      * 
-     * @param module
+     * @param moduleName
      */
-    public void unregister(String module);
+    public void unregister(String moduleName);
 }

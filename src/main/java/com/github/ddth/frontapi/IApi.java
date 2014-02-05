@@ -8,6 +8,8 @@ package com.github.ddth.frontapi;
  */
 public interface IApi {
 
+    public final static String OPEN_AUTHKEY = "-";
+
     public final static int STATUS_OK = 200;
     public final static int STATUS_FORBIDDEN = 403;
     public final static int STATUS_NOT_FOUND = 404;

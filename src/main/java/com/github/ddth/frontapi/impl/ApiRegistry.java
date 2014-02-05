@@ -29,12 +29,12 @@ public class ApiRegistry implements IApiRegistry {
     /**
      * Looks up an API.
      * 
-     * @param module
+     * @param moduleName
      * @param apiName
      * @return
      */
-    protected IApi lookup(String module, String apiName) {
-        Map<String, IApi> moduleApis = module != null ? registeredApis.get(module) : null;
+    protected IApi lookup(String moduleName, String apiName) {
+        Map<String, IApi> moduleApis = moduleName != null ? registeredApis.get(moduleName) : null;
         if (moduleApis == null) {
             return null;
         }
@@ -46,10 +46,10 @@ public class ApiRegistry implements IApiRegistry {
      * {@inheritDoc}
      */
     @Override
-    public ApiResult callApi(String module, String apiName, String authKey, Object params) {
-        IApi api = lookup(module, apiName);
+    public ApiResult callApi(String moduleName, String apiName, String authKey, Object params) {
+        IApi api = lookup(moduleName, apiName);
         if (api == null) {
-            return new ApiResult(IApi.STATUS_NOT_FOUND, "Api [" + module + "/" + apiName
+            return new ApiResult(IApi.STATUS_NOT_FOUND, "Api [" + moduleName + "/" + apiName
                     + "] not found!");
         }
         ApiParams apiParams = new ApiParams(params);

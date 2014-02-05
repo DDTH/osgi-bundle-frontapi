@@ -35,7 +35,7 @@ public class ApiServlet extends HttpServlet {
 
     private static class RequestTokens {
 
-        public String authKey, module, apiName;
+        public String authKey, moduleName, apiName;
 
         public static RequestTokens extractTokens(HttpServletRequest request, String urlMapping) {
             String requestUri = request.getRequestURI();
@@ -44,7 +44,7 @@ public class ApiServlet extends HttpServlet {
             String[] tokens = StringUtils.split(requestUri, '/');
             RequestTokens requestTokens = new RequestTokens();
             requestTokens.authKey = tokens.length > 0 ? tokens[0] : null;
-            requestTokens.module = tokens.length > 1 ? tokens[1] : null;
+            requestTokens.moduleName = tokens.length > 1 ? tokens[1] : null;
             requestTokens.apiName = tokens.length > 2 ? tokens[2] : null;
             return requestTokens;
         }
@@ -81,7 +81,7 @@ public class ApiServlet extends HttpServlet {
                 }
             }
         }
-        ApiResult apiResult = apiRegistry.callApi(requestTokens.module, requestTokens.apiName,
+        ApiResult apiResult = apiRegistry.callApi(requestTokens.moduleName, requestTokens.apiName,
                 requestTokens.authKey, requestParams);
         jsonResponse(response, apiResult);
     }
@@ -103,16 +103,17 @@ public class ApiServlet extends HttpServlet {
         } finally {
             IOUtils.closeQuietly(is);
         }
-        ApiResult apiResult = apiRegistry.callApi(requestTokens.module, requestTokens.apiName,
+        ApiResult apiResult = apiRegistry.callApi(requestTokens.moduleName, requestTokens.apiName,
                 requestTokens.authKey, requestParams);
         jsonResponse(response, apiResult);
     }
 
     private void jsonResponse(HttpServletResponse response, ApiResult apiResult) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("status", apiResult.getStatus());
-        result.put("output", apiResult.getOutput());
-        response.getWriter().write(JsonUtils.toJsonString(result));
+        response.getWriter().write(JsonUtils.toJsonString(apiResult));
+        // Map<String, Object> result = new HashMap<String, Object>();
+        // result.put("status", apiResult.getStatus());
+        // result.put("output", apiResult.getOutput());
+        // response.getWriter().write(JsonUtils.toJsonString(result));
     }
 }

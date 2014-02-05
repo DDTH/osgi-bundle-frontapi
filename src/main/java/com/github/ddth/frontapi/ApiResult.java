@@ -1,5 +1,7 @@
 package com.github.ddth.frontapi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Encapsulates result of an API call.
  * 
@@ -7,8 +9,17 @@ package com.github.ddth.frontapi;
  * @since 0.1.0
  */
 public class ApiResult {
+
+    public final static String FIELD_STATUS = "status", FIELD_OUTPUT = "output";
+
+    @JsonProperty
     private int status;
+
+    @JsonProperty
     private Object output;
+
+    public ApiResult() {
+    }
 
     public ApiResult(int status, Object output) {
         this.status = status;

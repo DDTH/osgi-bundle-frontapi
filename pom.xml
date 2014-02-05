@@ -14,16 +14,57 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.java>1.6</version.java>
-		<version.felix>4.2.1</version.felix>
-		<version.osgi>4.3.0</version.osgi>
+		<version.felix>[4.2.1,5.0.0)</version.felix>
+		<version.osgi>[4.3.0,5.0.0)</version.osgi>
+		<version.servlet>[2.5.0,3.0.0)</version.servlet>
+		<version.jackson>[2.2.3,)</version.jackson>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${version.servlet}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 			<version>${version.osgi}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<version>[1.4.0,2.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>[2.4,3.0)</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libthrift</artifactId>
+			<version>[0.9.1,1.0.0)</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${version.jackson}</version>
 		</dependency>
 	</dependencies>
 
@@ -45,8 +86,12 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-Activator>com.github.ddth.frontapi.Activator</Bundle-Activator>
-						<Export-Package />
+						<Bundle-Activator>com.github.ddth.frontapi.internal.Activator</Bundle-Activator>
+						<Export-Package>com.github.ddth.frontapi,com.github.ddth.frontapi.osgi</Export-Package>
+						<Import-Package>!org.apache.http.*,*</Import-Package>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Transitive>false</Embed-Transitive>
+						<Embed-Directory>lib</Embed-Directory>
 					</instructions>
 				</configuration>
 			</plugin>

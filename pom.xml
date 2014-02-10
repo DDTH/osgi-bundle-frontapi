@@ -11,6 +11,32 @@
 	<description>OSGi approach to develop your APIs</description>
 	<url>https://github.com/DDTH/osgi-bundle-frontapi</url>
 
+	<licenses>
+		<license>
+			<name>The MIT License (MIT)</name>
+			<url>http://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>git@github.com:DDTH/osgi-bundle-frontapi.git</url>
+		<connection>scm:git:git@github.com:DDTH/osgi-bundle-frontapi.git</connection>
+		<developerConnection>scm:git:git@github.com:DDTH/osgi-bundle-frontapi.git</developerConnection>
+	</scm>
+	<developers>
+		<developer>
+			<id>btnguyen2k</id>
+			<name>Thanh Ba Nguyen</name>
+			<email>btnguyen2k@gmail.com</email>
+		</developer>
+	</developers>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.java>1.6</version.java>

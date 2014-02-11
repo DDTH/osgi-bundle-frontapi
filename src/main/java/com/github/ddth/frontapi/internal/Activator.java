@@ -19,6 +19,7 @@ import com.github.ddth.frontapi.impl.ApiRegistry;
 import com.github.ddth.frontapi.impl.ApiServlet;
 import com.github.ddth.frontapi.internal.thrift.ThriftApiServer;
 import com.github.ddth.frontapi.osgi.AbstractActivator;
+import com.github.ddth.frontapi.osgi.Constants;
 
 public class Activator extends AbstractActivator {
 
@@ -59,7 +60,7 @@ public class Activator extends AbstractActivator {
         apiRegistry = new ApiRegistry();
         apiRegistry.init();
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put("Module", MODULE_NAME);
+        props.put(Constants.LOOKUP_PROP_MODULE, MODULE_NAME);
         registerService(IApiRegistry.class, apiRegistry, props);
     }
 

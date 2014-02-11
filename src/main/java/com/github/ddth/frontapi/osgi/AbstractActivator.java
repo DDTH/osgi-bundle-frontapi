@@ -9,11 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +34,8 @@ public abstract class AbstractActivator implements BundleActivator {
     private Logger LOGGER = LoggerFactory.getLogger(AbstractActivator.class);
 
     private BundleContext bundleContext;
+    private Bundle bundle;
+
     @SuppressWarnings("rawtypes")
     private List<ServiceRegistration> registeredServices = new ArrayList<ServiceRegistration>();
 
@@ -41,6 +46,16 @@ public abstract class AbstractActivator implements BundleActivator {
      */
     protected BundleContext bundleContext() {
         return this.bundleContext;
+    }
+
+    /**
+     * Gets the {@link Bundle} instance.
+     * 
+     * @return
+     * @since 0.1.2
+     */
+    protected Bundle bundle() {
+        return this.bundle;
     }
 
     /**
@@ -393,11 +408,82 @@ public abstract class AbstractActivator implements BundleActivator {
     }
 
     /**
+     * Called when another version of this bundle is found in the bundle
+     * context.
+     * 
+     * <p>
+     * This method compares this bundle's version to the other bundle's version.
+     * If this bundle is newer, calls
+     * {@link #handleNewerVersionAtStartup(Bundle)}; otherwise calls
+     * {@link #handleOlderVersionAtStartup(Bundle)}.
+     * </p>
+     * 
+     * @param bundle
+     * @since 0.1.2
+     * @throws BundleException
+     */
+    protected void handleAnotherVersionAtStartup(Bundle bundle) throws BundleException {
+        Version myVersion = this.bundle.getVersion();
+        Version otherVersion = bundle.getVersion();
+        if (myVersion.compareTo(otherVersion) > 0) {
+            handleNewerVersionAtStartup(bundle);
+        } else {
+            handleOlderVersionAtStartup(bundle);
+        }
+    }
+
+    /**
+     * Called by {@link #handleAnotherVersionAtStartup(Bundle)} if the other
+     * bundle's version is older than this bundle's version.
+     * 
+     * <p>
+     * This method does nothing. Sub-class may override this method to implement
+     * its own business logic.
+     * </p>
+     * 
+     * @param bundle
+     * @since 0.1.2
+     * @throws BundleException
+     */
+    protected void handleOlderVersionAtStartup(Bundle bundle) throws BundleException {
+        // EMPTY
+    }
+
+    /**
+     * Called by {@link #handleAnotherVersionAtStartup(Bundle)} if the other
+     * bundle's version is newer than this bundle's version.
+     * 
+     * <p>
+     * This method does nothing. Sub-class may override this method to implement
+     * its own business logic.
+     * </p>
+     * 
+     * @param bundle
+     * @since 0.1.2
+     * @throws BundleException
+     */
+    protected void handleNewerVersionAtStartup(Bundle bundle) throws BundleException {
+        // EMPTY
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void start(BundleContext context) throws Exception {
         this.bundleContext = context;
+        this.bundle = context.getBundle();
+
+        long myId = this.bundle.getBundleId();
+        String myName = this.bundle.getSymbolicName();
+        Bundle[] currentBundles = this.bundleContext.getBundles();
+        for (Bundle bundle : currentBundles) {
+            if (myId != bundle.getBundleId() && myName.equals(bundle.getSymbolicName())) {
+                // found another version of me
+                handleAnotherVersionAtStartup(bundle);
+            }
+        }
+
         try {
             init();
         } catch (Exception e) {

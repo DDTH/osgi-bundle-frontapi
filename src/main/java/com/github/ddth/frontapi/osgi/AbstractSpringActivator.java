@@ -103,7 +103,7 @@ public abstract class AbstractSpringActivator extends AbstractActivator {
      * @return
      */
     protected String[] getSpringConfigFiles() {
-        return new String[] { "/osgispring/*.xml" };
+        return new String[] { "/spring/*.xml" };
     }
 
     protected void initApplicationContext() throws Exception {

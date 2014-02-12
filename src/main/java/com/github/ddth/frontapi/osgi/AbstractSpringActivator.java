@@ -96,15 +96,14 @@ public abstract class AbstractSpringActivator extends AbstractActivator {
      * Gets list of Spring's configuration files.
      * 
      * <p>
-     * This methods return
-     * <code>new String[] { "/META-INF/osgispring/*.xml" }</code>. Sub-class may
-     * override this method to implement its own business logic.
+     * This methods return <code>new String[] { "/spring/*.xml" }</code>.
+     * Sub-class may override this method to implement its own business logic.
      * </p>
      * 
      * @return
      */
     protected String[] getSpringConfigFiles() {
-        return new String[] { "/META-INF/osgispring/*.xml" };
+        return new String[] { "/osgispring/*.xml" };
     }
 
     protected void initApplicationContext() throws Exception {

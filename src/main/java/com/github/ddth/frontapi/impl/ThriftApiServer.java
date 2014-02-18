@@ -1,4 +1,4 @@
-package com.github.ddth.frontapi.internal.thrift;
+package com.github.ddth.frontapi.impl;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
@@ -7,6 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.ddth.frontapi.IApiRegistry;
+import com.github.ddth.frontapi.internal.thrift.IServerFactory;
+import com.github.ddth.frontapi.internal.thrift.JsonApiHandler;
+import com.github.ddth.frontapi.internal.thrift.TApi;
+import com.github.ddth.frontapi.internal.thrift.ThreadedSelectorServerFactory;
+import com.github.ddth.frontapi.internal.thrift.ThreadedServerFactory;
+import com.github.ddth.frontapi.internal.thrift.TApi.Iface;
+import com.github.ddth.frontapi.internal.thrift.TApi.Processor;
 
 public class ThriftApiServer {
 

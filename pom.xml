@@ -213,7 +213,7 @@
 					<instructions>
 						<Bundle-Activator>com.github.ddth.frontapi.internal.Activator</Bundle-Activator>
 						<Export-Package>com.github.ddth.frontapi,com.github.ddth.frontapi.client,com.github.ddth.frontapi.osgi</Export-Package>
-						<Import-Package>!org.apache.http.*,!com.yammer.metrics.*,org.springframework.*;resolution:=optional,*</Import-Package>
+						<Import-Package>!akka.*,!org.apache.http.*,!com.yammer.metrics.*,org.springframework.*;resolution:=optional,*</Import-Package>
 						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
 						<Embed-Transitive>false</Embed-Transitive>
 						<Embed-Directory>lib</Embed-Directory>

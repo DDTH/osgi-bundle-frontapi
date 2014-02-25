@@ -30,7 +30,7 @@ Maven dependency:
 ```
 
 
-## Develop and Call API ##
+## Develop and Call APIs ##
 
 APIs are grouped into modules. Each API has a name and belongs to a module. Module can be viewed as API's namespace.
 
@@ -45,28 +45,28 @@ Steps to develop an API:
 
 1. Develop API by implementing interface `com.github.ddth.frontapi`.
 2. Lookup the `com.github.ddth.frontapi.IApiRegistry` instance and register the API.
-> ```java
-> @Override
-> public void start(BundleContext context) throws Exception {
->     ...
->     IApi api = ...; //obtain the API instance
->     ...
->     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
->     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
->     apiRegistry.register("module-name", "api-name", api);
->     bundleContext.ungetService(serviceRef);
->     ....
-> }
-> ```
+ ```java
+ @Override
+ public void start(BundleContext context) throws Exception {
+     ...
+     IApi api = ...; //obtain the API instance
+     ...
+     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
+     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
+     apiRegistry.register("module-name", "api-name", api);
+     bundleContext.ungetService(serviceRef);
+     ....
+ }
+ ```
 3. Unregister APIs when finish.
-> ```java
-> @Override
-> public void start(BundleContext context) throws Exception {
->     ...
->     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
->     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
->     apiRegistry.unregister("module-name");
->     bundleContext.ungetService(serviceRef);
->     ...
-> }
-> ```
+ ```java
+ @Override
+ public void start(BundleContext context) throws Exception {
+     ...
+     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
+     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
+     apiRegistry.unregister("module-name");
+     bundleContext.ungetService(serviceRef);
+     ...
+ }
+ ```

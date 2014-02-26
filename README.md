@@ -41,32 +41,67 @@ Notes:
 - Using bundle's name as module name would be a good way.
 - Two APIs in two different modules can have a same name.
 
-Steps to develop an API:
+Steps to develop APIs:
 
-1. Develop API by implementing interface `com.github.ddth.frontapi`.
-2. Lookup the `com.github.ddth.frontapi.IApiRegistry` instance and register the API.
- ```java
- @Override
- public void start(BundleContext context) throws Exception {
-     ...
-     IApi api = ...; //obtain the API instance
-     ...
-     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
-     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
-     apiRegistry.register("module-name", "api-name", api);
-     bundleContext.ungetService(serviceRef);
-     ....
- }
- ```
-3. Unregister APIs when finish.
- ```java
- @Override
- public void start(BundleContext context) throws Exception {
-     ...
-     ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
-     IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
-     apiRegistry.unregister("module-name");
-     bundleContext.ungetService(serviceRef);
-     ...
- }
- ```
+1.Develop APIs by implementing interface `com.github.ddth.frontapi`.
+
+2.Lookup the `com.github.ddth.frontapi.IApiRegistry` instance and register APIs when the bundle starts.
+```java
+@Override
+public void start(BundleContext context) throws Exception {
+    ...
+    IApi api = ...; //obtain the API instance
+    ...
+    ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
+    IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
+    apiRegistry.register("module-name", "api-name", api);
+    bundleContext.ungetService(serviceRef);
+    ....
+}
+```
+
+From now on, APIs can be called via REST, [Thrift](http://thrift.apache.org) or using `IApiClient`.
+
+a) Call APIs via REST, assuming osgi-bundle-frontapi is deployed on [OSGi Server](https://github.com/DDTH/osgiserver):
+> `GET http://host:port/api/<auth-key>/<module-name>/<api-name>?param1=value1&param2=value2&...`
+
+or
+> `POST http://host:port/api/<auth-key>/<module-name>/<api-name>`
+> 
+> API's input parameters are encapsulated in the POST request's body, *encoded as a JSON string*.
+
+b) Call APIs via Thrift (Thrift server's default port is `9090`):
+> Generate Thrift client stub from [FrontApi.thrift](FrontApi.thrift).
+
+c) Call APIs using `IApiClient`:
+> ```java
+> import com.github.ddth.frontapi.ApiResult;
+> import com.github.ddth.frontapi.client.*;
+> ...
+> 
+> //call APIs via REST client
+> IApiClient apiClient = new RestApiClient("http://host:port/api");
+> Object apiInputs = ...;
+> ApiResult result = apiClient.call("auth-key", "module-name", "api-name", apiInputs);
+> ...
+>
+> //call APIs via Thrift client
+> IApiClient apiClient = new ThriftApiClient("host", port);
+> Object apiInputs = ...;
+> ApiResult result = apiClient.call("auth-key", "module-name", "api-name", apiInputs);
+> ...
+> ```
+
+3.Unregister APIs when the bundle stops.
+```java
+@Override
+public void start(BundleContext context) throws Exception {
+    ...
+    ServiceReference<IApiRegistry> serviceRef = bundleContext.getServiceReference(IApiRegistry.class);
+    IApiRegistry apiRegistry = bundleContext.getService(serviceRef);
+    apiRegistry.unregister("module-name");
+    bundleContext.ungetService(serviceRef);
+    ...
+}
+```
+

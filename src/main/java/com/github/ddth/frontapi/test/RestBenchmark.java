@@ -10,12 +10,12 @@ import com.github.ddth.frontapi.internal.Activator;
 public class RestBenchmark {
 
 	public static void main(String[] args) throws Exception {
-		final int NUM_THREADS = 64;
-		final int TOTAL_RUN = 1000000;
+		final int NUM_THREADS = 32;
+		final int TOTAL_RUN = 100000;
 
 		final RestApiClient[] CLIENTS = new RestApiClient[NUM_THREADS];
 		for (int i = 0; i < NUM_THREADS; i++) {
-			CLIENTS[i] = new RestApiClient("http://localhost:8080/api");
+			CLIENTS[i] = new RestApiClient("http://localhost:9000/api");
 		}
 		final Map<String, Object> data = new HashMap<String, Object>();
 		for (int i = 0; i < 4; i++) {
